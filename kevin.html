@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Local Storage Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0; /* Background color for the body */
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            text-align: left;
+        }
+
+        h1 {
+            font-size: 24px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        img {
+            float: right;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+        }
+
+        p {
+            font-size: 18px;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+        }
+
+        #aquaButton {
+            background-color: aqua;
+        }
+
+        #greenButton {
+            background-color: green;
+        }
+
+        #whiteButton {
+            background-color: white;
+            color: #000; /* Black text on the white button */
+        }
+
+        #visitCount {
+            font-size: 20px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body onload="initialize()">
+    <div class="container">
+        <h1>Welcome</h1>
+        <table>
+            <tr>
+                <th colspan="2">Personal Information</th>
+            </tr>
+            <tr>
+                <td>Name:</td>
+                <td>Kevin Kimutai</td>
+            </tr>
+            <tr>
+                <td>Registration Number:</td>
+                <td>Sct222-0160/2021</td>
+            </tr>
+            <tr>
+                <td colspan="2"><img src="a.jfif" alt="my Picture"></td>
+            </tr>
+        </table>
+        <p>Click the buttons to set your background color:</p>
+        <button id="aquaButton" type="button" onclick="setColorPreference('aqua')">Aqua</button>
+        <button id="greenButton" type="button" onclick="setColorPreference('green')">Green</button>
+        <button id="whiteButton" type="button" onclick="setColorPreference('white')">White</button>
+        <div id="visitCount"></div>
+    </div>
+</body>
+<script>
+    const localStorage = window.localStorage;
+
+    const initialize = () => {
+        if (localStorage) {
+            const count = localStorage.getItem("visitCount") || 0;
+            const newCount = parseInt(count) + 1;
+            localStorage.setItem("visitCount", newCount);
+        }
+        updateDOM();
+    };
+
+    const updateDOM = () => {
+        const count = localStorage.getItem("visitCount") || 0;
+        const storedPreferences = localStorage.getItem("preference");
+        const preference = storedPreferences ? JSON.parse(storedPreferences) : {};
+        document.getElementById("visitCount").innerHTML = `Visit count: ${count}`;
+        document.body.style.background = preference.color || "white";
+    };
+
+    const setColorPreference = (color) => {
+        const preference = {
+            color
+        };
+        localStorage.setItem("preference", JSON.stringify(preference));
+        updateDOM();
+    };
+</script>
+</html>
